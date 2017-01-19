@@ -82,7 +82,23 @@ else if (sayA === "spotify-this-song") {
 }
 
 else if (sayA === "movie-this"){
-
+	if(sayB === ""){
+		sayB = "Mr. Nobody"
+	}
+	var customURL = "http://www.omdbapi.com/?t="+ sayB +"&y=&plot=short&r=json";
+	
+	requestFS(customURL, function (error, response, body) {
+		var movieData = JSON.parse(body);
+		if (!error && response.statusCode == 200) {
+			console.log("Title: " + movieData.Year);
+			console.log("Year: " + movieData.Year);
+			console.log("IMDB Rating: " + movieData.imdbRating);
+			console.log("Country: " + movieData.Country);
+			console.log("Lanugage(s): " + movieData.Language);
+			console.log("Plot: " + movieData.Plot);
+			console.log("Actors: " + movieData.Actors);
+	  	}
+	});
 }
 
 else if (sayA === "do-what-it-says"){
