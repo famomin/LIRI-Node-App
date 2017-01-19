@@ -46,7 +46,10 @@ if (sayA === "my-tweets") {
 	var params = {screen_name: 'nodejs'};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 		if (!error) {
-	    	console.log(tweets);
+			 for (var i = 0; i < tweets.length; i++) {
+                console.log('tweets: '+JSON.stringify(tweets[i].text, null, 2));
+                console.log('time: '+JSON.stringify(tweets[i].created_at, null,2));
+            }
 	  	}
 	});
 
