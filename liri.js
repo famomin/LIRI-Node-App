@@ -56,24 +56,29 @@ if (sayA === "my-tweets") {
 }
 
 else if (sayA === "spotify-this-song") {
-	if(sayB === ""){
-		sayB = "The Sign by Ace of Base";
+	var songTitle = sayB;
+
+	if (process.argv[3]){
+		spotifyFS.search({ type: 'track', query: songTitle }, function(err, data) {
+		    //to see the whole object of data
+	 		//console.log(JSON.stringify(data, null, 2));
+
+		 	console.log("Song: " + data.tracks.items[0].name);
+			console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+			console.log("Album: " + data.tracks.items[0].album.name);
+			console.log("Preview: " + data.tracks.items[0].preview_url);	
+		}); 
 	}
 
-	spotifyFS.search({ type: 'track', query: sayB }, function(err, data) {
-	    if ( err ) {
-	        console.log('Error occurred: ' + err);
-	        return;
-	    }
-	    
-	    //to see the whole object of data
- 		//console.log(JSON.stringify(data, null, 2));
+	else {
+		spotifyFS.search({ type: 'track', query: 'The Sign' }, function(err, data) {
+		 	console.log("Song: " + data.tracks.items[0].name);
+			console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+			console.log("Album: " + data.tracks.items[0].album.name);
+			console.log("Preview: " + data.tracks.items[0].preview_url);	
+		}); 
+	}
 
-	 	console.log("Song: " + sayB);
-		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
-		console.log("Album: " + data.tracks.items[0].album.name);
-		console.log("Preview: " + data.tracks.items[0].preview_url);	
-	});
 }
 
 else if (sayA === "movie-this"){
