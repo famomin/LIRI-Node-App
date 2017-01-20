@@ -85,7 +85,7 @@ else if (sayA === "movie-this"){
 	if(sayB === ""){
 		sayB = "Mr. Nobody"
 	}
-	var customURL = "http://www.omdbapi.com/?t="+ sayB +"&y=&plot=short&r=json";
+	var customURL = "http://www.omdbapi.com/?t="+ sayB +"&y=&plot=short&r=json&tomatoes=true";
 	
 	requestFS(customURL, function (error, response, body) {
 		var movieData = JSON.parse(body);
@@ -97,6 +97,8 @@ else if (sayA === "movie-this"){
 			console.log("Lanugage(s): " + movieData.Language);
 			console.log("Plot: " + movieData.Plot);
 			console.log("Actors: " + movieData.Actors);
+			console.log("Rotten Tomatoes Rating: " + movieData.tomatoRating);
+			console.log("Rotten Tomatoes Link: " + movieData.tomatoURL);
 	  	}
 	});
 }
