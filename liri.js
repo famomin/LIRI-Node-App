@@ -105,29 +105,25 @@ function myTweets () {
 }
 
 function spotifyThis (songName) {
+	// setting a default song if no song entered by user
 	if(songName===""){
-		songName = "The Sign"
+		songName = "The Sign by Ace of Base";
 	}
 
 	spotifyFS.search({ type: 'track', query: songName }, function(err, data) {
 	    //to see the whole object of data	 		
 	    //console.log(JSON.stringify(data, null, 2));
 
+	     if ( err ) {
+            console.log('Error occurred: ' + err);
+            return;
+        }
+
 		console.log("Song: " + data.tracks.items[0].name);
 		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
 		console.log("Album: " + data.tracks.items[0].album.name);
 		console.log("Preview: " + data.tracks.items[0].preview_url);	
 	});
-
-	// else {
-	// 	spotifyFS.search({ type: 'track', query: 'The Sign' }, function(err, data) {
-	// 	 	console.log("Song: " + data.tracks.items[0].name);
-	// 		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
-	// 		console.log("Album: " + data.tracks.items[0].album.name);
-	// 		console.log("Preview: " + data.tracks.items[0].preview_url);	
-	// 	}); 
-	// }
-
 }
 
 //movie function
@@ -137,12 +133,13 @@ function movieThis (movieName) {
 		movieName = "Mr. Nobody"
 	}
 
-	var customURL = "http://www.omdbapi.com/?t="+ movieName +"&y=&plot=short&r=json&tomatoes=true";
+	var customURL = "http://www.omdbapi.com/?t="+ movieName +"&y=&plot=full&tomatoes=true&r=json";
+
 	
 	requestFS(customURL, function (error, response, body) {
 		var movieData = JSON.parse(body);
 		if (!error && response.statusCode == 200) {
-			console.log("Title: " + movieData.Year);
+			console.log("Title: " + movieData.Title);
 			console.log("Year: " + movieData.Year);
 			console.log("IMDB Rating: " + movieData.imdbRating);
 			console.log("Country: " + movieData.Country);
