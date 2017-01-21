@@ -11,6 +11,7 @@ var accKeySec = keysNeeded.twitterKeys.access_token_secret;
 var twitterFS = require("twitter");
 var spotifyFS = require("spotify");
 var requestFS = require("request");
+var fs = require("fs");
 
 //console.log(consKey);
 //console.log(consKeySec);
@@ -36,6 +37,36 @@ for (var i = 3; i < nodeArgs.length; i++) {
 
 
 if (sayA === "my-tweets") {
+	myTweets();
+}
+
+else if (sayA === "spotify-this-song") {
+	spotifyThis(sayB);
+}
+
+else if (sayA === "movie-this") {
+	movieThis(sayB);
+}
+
+else if (sayA === "do-what-it-says"){
+	fs.readFile("random.txt", "utf8", function(error, data) {
+
+	  	// We will then print the contents of data
+		console.log(data);
+
+		// Then split it by commas (to make it more readable)
+		var dataArr = data.split(",");
+
+		var sayC = dataArr[0];
+		var sayD = dataArr[1];
+
+		console.log(sayC);
+		console.log(sayD);
+	});
+
+}
+
+function myTweets () {
 	var client = new twitterFS({
 		consumer_key: consKey,
 	  	consumer_secret: consKeySec,
@@ -51,15 +82,12 @@ if (sayA === "my-tweets") {
                 console.log('time: '+JSON.stringify(tweets[i].created_at, null,2));
             }
 	  	}
-	});
-
+	});	
 }
 
-else if (sayA === "spotify-this-song") {
-	var songTitle = sayB;
-
+function spotifyThis (songName) {
 	if (process.argv[3]){
-		spotifyFS.search({ type: 'track', query: songTitle }, function(err, data) {
+		spotifyFS.search({ type: 'track', query: songName }, function(err, data) {
 		    //to see the whole object of data
 	 		//console.log(JSON.stringify(data, null, 2));
 
@@ -81,11 +109,12 @@ else if (sayA === "spotify-this-song") {
 
 }
 
-else if (sayA === "movie-this"){
-	if(sayB === ""){
-		sayB = "Mr. Nobody"
+function movieThis (movieName) {
+	if(movieName === ""){
+		movieName = "Mr. Nobody"
 	}
-	var customURL = "http://www.omdbapi.com/?t="+ sayB +"&y=&plot=short&r=json&tomatoes=true";
+
+	var customURL = "http://www.omdbapi.com/?t="+ movieName +"&y=&plot=short&r=json&tomatoes=true";
 	
 	requestFS(customURL, function (error, response, body) {
 		var movieData = JSON.parse(body);
@@ -97,12 +126,8 @@ else if (sayA === "movie-this"){
 			console.log("Lanugage(s): " + movieData.Language);
 			console.log("Plot: " + movieData.Plot);
 			console.log("Actors: " + movieData.Actors);
-			console.log("Rotten Tomatoes Rating: " + movieData.tomatoRating);
+			console.log("Rotten Tomatoes Rating: " + movieData.tomatoMeter);
 			console.log("Rotten Tomatoes Link: " + movieData.tomatoURL);
 	  	}
 	});
-}
-
-else if (sayA === "do-what-it-says"){
-
 }
