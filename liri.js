@@ -13,11 +13,6 @@ var spotifyFS = require("spotify");
 var requestFS = require("request");
 var fs = require("fs");
 
-//console.log(consKey);
-//console.log(consKeySec);
-//console.log(accKey);
-//console.log(accKeySec);
-
 // assigning variable to the arguement in index 3
 var sayA = process.argv[2];
 
@@ -35,19 +30,22 @@ for (var i = 3; i < nodeArgs.length; i++) {
   sayB = sayB + " " + nodeArgs[i];
 }
 
-
+//if user wants to see tweets
 if (sayA === "my-tweets") {
 	myTweets();
 }
 
+//if user wants to spotify a song
 else if (sayA === "spotify-this-song") {
 	spotifyThis(sayB);
 }
 
+//if user wants to know about a movie
 else if (sayA === "movie-this") {
 	movieThis(sayB);
 }
 
+// if user want to make it read a random file
 else if (sayA === "do-what-it-says"){
 	fs.readFile("random.txt", "utf8", function(error, data) {
 
@@ -57,11 +55,32 @@ else if (sayA === "do-what-it-says"){
 		// Then split it by commas (to make it more readable)
 		var dataArr = data.split(",");
 
-		var sayC = dataArr[0];
-		var sayD = dataArr[1];
+		var action = dataArr[0];
+		var item = dataArr[1];
 
-		console.log(sayC);
-		console.log(sayD);
+		//switch case to see to see which action to perfrom based on ranfom file.
+		switch (action){
+            //checking for tweets
+            case "my-tweets":
+                myTweets();
+            break;
+
+            //checking for song on spotify
+            case "spotify-this-song":
+                spotifyThis(item);
+            break;
+
+            //checking for movie details
+            case "movie-this":
+                movieThis(item);
+            break;
+
+            //default error if commend not used correctly. 
+            default:
+                //when in doubt halt and self destruct
+                console.log("Insufficient information to perform this action");
+                //format c:
+        }
 	});
 
 }
@@ -86,30 +105,34 @@ function myTweets () {
 }
 
 function spotifyThis (songName) {
-	if (process.argv[3]){
-		spotifyFS.search({ type: 'track', query: songName }, function(err, data) {
-		    //to see the whole object of data
-	 		//console.log(JSON.stringify(data, null, 2));
-
-		 	console.log("Song: " + data.tracks.items[0].name);
-			console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
-			console.log("Album: " + data.tracks.items[0].album.name);
-			console.log("Preview: " + data.tracks.items[0].preview_url);	
-		}); 
+	if(songName===""){
+		songName = "The Sign"
 	}
 
-	else {
-		spotifyFS.search({ type: 'track', query: 'The Sign' }, function(err, data) {
-		 	console.log("Song: " + data.tracks.items[0].name);
-			console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
-			console.log("Album: " + data.tracks.items[0].album.name);
-			console.log("Preview: " + data.tracks.items[0].preview_url);	
-		}); 
-	}
+	spotifyFS.search({ type: 'track', query: songName }, function(err, data) {
+	    //to see the whole object of data	 		
+	    //console.log(JSON.stringify(data, null, 2));
+
+		console.log("Song: " + data.tracks.items[0].name);
+		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+		console.log("Album: " + data.tracks.items[0].album.name);
+		console.log("Preview: " + data.tracks.items[0].preview_url);	
+	});
+
+	// else {
+	// 	spotifyFS.search({ type: 'track', query: 'The Sign' }, function(err, data) {
+	// 	 	console.log("Song: " + data.tracks.items[0].name);
+	// 		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+	// 		console.log("Album: " + data.tracks.items[0].album.name);
+	// 		console.log("Preview: " + data.tracks.items[0].preview_url);	
+	// 	}); 
+	// }
 
 }
 
+//movie function
 function movieThis (movieName) {
+	//if user does not provide any movie, then default then we assign it a movie
 	if(movieName === ""){
 		movieName = "Mr. Nobody"
 	}
