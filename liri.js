@@ -133,7 +133,7 @@ function movieThis (movieName) {
 		movieName = "Mr. Nobody"
 	}
 
-	var customURL = "http://www.omdbapi.com/?t="+ movieName +"&y=&plot=full&tomatoes=true&r=json";
+	var customURL = "http://www.omdbapi.com/?t="+ movieName +"&y=&plot=short&tomatoes=true&r=json";
 
 	
 	requestFS(customURL, function (error, response, body) {
