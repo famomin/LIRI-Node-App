@@ -1,4 +1,5 @@
-//requireing Keys.js file
+//requireing Keys.js file and log.txt file
+var keysNeeded = require("./keys.js");
 var keysNeeded = require("./keys.js");
 
 //importing twitter keys
@@ -33,16 +34,20 @@ for (var i = 3; i < nodeArgs.length; i++) {
 //if user wants to see tweets
 if (sayA === "my-tweets") {
 	myTweets();
+	fs.appendFile("log.txt", sayA + ", ");
+
 }
 
 //if user wants to spotify a song
 else if (sayA === "spotify-this-song") {
 	spotifyThis(sayB);
+	fs.appendFile("log.txt", sayA + " " + sayB + ", ");
 }
 
 //if user wants to know about a movie
 else if (sayA === "movie-this") {
 	movieThis(sayB);
+	fs.appendFile("log.txt", sayA + " " + sayB + ", ");
 }
 
 // if user want to make it read a random file
@@ -82,9 +87,10 @@ else if (sayA === "do-what-it-says"){
                 //format c:
         }
 	});
-
+	fs.appendFile("log.txt", sayA + ", ");
 }
 
+//fucntions to get 20 tweets
 function myTweets () {
 	var client = new twitterFS({
 		consumer_key: consKey,
@@ -110,15 +116,15 @@ function spotifyThis (songName) {
 		songName = "The Sign by Ace of Base";
 	}
 
+	//getting spotify data and printing on terminal
 	spotifyFS.search({ type: 'track', query: songName }, function(err, data) {
 	    //to see the whole object of data	 		
 	    //console.log(JSON.stringify(data, null, 2));
 
-	     if ( err ) {
+	    if ( err ) {
             console.log('Error occurred: ' + err);
             return;
         }
-
 		console.log("Song: " + data.tracks.items[0].name);
 		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
 		console.log("Album: " + data.tracks.items[0].album.name);
@@ -133,9 +139,10 @@ function movieThis (movieName) {
 		movieName = "Mr. Nobody"
 	}
 
+	//making custom url for OMDB query search. 
 	var customURL = "http://www.omdbapi.com/?t="+ movieName +"&y=&plot=short&tomatoes=true&r=json";
 
-	
+	//getting data and printing it on terminal
 	requestFS(customURL, function (error, response, body) {
 		var movieData = JSON.parse(body);
 		if (!error && response.statusCode == 200) {
