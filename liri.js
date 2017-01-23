@@ -92,14 +92,16 @@ else if (sayA === "do-what-it-says"){
 
 //fucntions to get 20 tweets
 function myTweets () {
+	//twitter keys
 	var client = new twitterFS({
 		consumer_key: consKey,
 	  	consumer_secret: consKeySec,
 		access_token_key: accKey,
 		access_token_secret: accKeySec
 	});
-	 
-	var params = {screen_name: 'nodejs'};
+	
+	//twitter function to get tweets, and display on terminal.
+	var params = {screen_name: 'famomin13' , count: 20};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 		if (!error) {
 			 for (var i = 0; i < tweets.length; i++) {
@@ -108,8 +110,10 @@ function myTweets () {
             }
 	  	}
 	});	
-}
+} // ending myTweet function here.
 
+
+//function to get song info from spotify
 function spotifyThis (songName) {
 	// setting a default song if no song entered by user
 	if(songName===""){
@@ -121,18 +125,20 @@ function spotifyThis (songName) {
 	    //to see the whole object of data	 		
 	    //console.log(JSON.stringify(data, null, 2));
 
+	    //showing error if there is an error
 	    if ( err ) {
             console.log('Error occurred: ' + err);
             return;
         }
+
 		console.log("Song: " + data.tracks.items[0].name);
 		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
 		console.log("Album: " + data.tracks.items[0].album.name);
 		console.log("Preview: " + data.tracks.items[0].preview_url);	
 	});
-}
+} //ending spotifyThis function here
 
-//movie function
+//movieThis function to show movie informations
 function movieThis (movieName) {
 	//if user does not provide any movie, then default then we assign it a movie
 	if(movieName === ""){
